@@ -69,11 +69,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BCK-l2-V4k">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BCK-l2-V4k">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UvW-WM-ag5">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UvW-WM-ag5">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="600.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WFAN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="vpw-bT-wrz">
                                                 <rect key="frame" x="10" y="15" width="102" height="42"/>
@@ -178,9 +178,12 @@
                                                 <rect key="frame" x="30" y="303" width="345" height="1"/>
                                                 <color key="backgroundColor" red="0.85346229090000003" green="0.85346229090000003" blue="0.85346229090000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </view>
-                                            <tableView clipsSubviews="YES" tag="101" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0so-J9-WId">
+                                            <tableView clipsSubviews="YES" tag="101" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0so-J9-WId">
                                                 <rect key="frame" x="30" y="314" width="345" height="75"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="75" id="NQx-3t-hAO"/>
+                                                </constraints>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="songTableCell" id="Zu9-Hc-Izu" customClass="SongsListTableViewCell" customModule="WFAN" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="345" height="44"/>
@@ -234,7 +237,7 @@
                                                 </connections>
                                             </tableView>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gX8-hV-K6B">
-                                                <rect key="frame" x="20" y="409" width="335" height="45"/>
+                                                <rect key="frame" x="20" y="399" width="335" height="45"/>
                                                 <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" image="add"/>
                                                 <userDefinedRuntimeAttributes>
@@ -247,18 +250,21 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DJ George Martin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="A1U-8V-2jw">
-                                                <rect key="frame" x="20" y="464" width="335" height="42"/>
+                                                <rect key="frame" x="20" y="454" width="335" height="42"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="000-i7-5kF">
-                                                <rect key="frame" x="30" y="516" width="345" height="1"/>
+                                                <rect key="frame" x="30" y="506" width="345" height="1"/>
                                                 <color key="backgroundColor" red="0.85346229090000003" green="0.85346229090000003" blue="0.85346229090000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </view>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="HfB-dc-Yuj">
-                                                <rect key="frame" x="75" y="517" width="300" height="150"/>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="HfB-dc-Yuj">
+                                                <rect key="frame" x="75" y="507" width="300" height="75"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="75" id="25k-Jh-zvy"/>
+                                                </constraints>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="dJTableCell" id="rtC-Ux-lGl" customClass="DJListTableViewCell" customModule="WFAN" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="300" height="44"/>
@@ -301,7 +307,7 @@
                                                 </connections>
                                             </tableView>
                                         </subviews>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="kXr-JM-AaF" firstAttribute="trailing" secondItem="lOP-FI-i5E" secondAttribute="trailing" id="03j-jt-gSG"/>
                                             <constraint firstItem="sot-2R-uBf" firstAttribute="top" secondItem="xZ2-E7-cnq" secondAttribute="bottom" id="0Mn-AK-dqj"/>
@@ -322,12 +328,11 @@
                                             <constraint firstItem="7qK-YY-aG4" firstAttribute="leading" secondItem="UvW-WM-ag5" secondAttribute="leading" constant="20" id="O76-WJ-2Rd"/>
                                             <constraint firstItem="000-i7-5kF" firstAttribute="centerX" secondItem="sot-2R-uBf" secondAttribute="centerX" id="OA6-c9-LaV"/>
                                             <constraint firstItem="b1H-mk-qxn" firstAttribute="leading" secondItem="7qK-YY-aG4" secondAttribute="leading" constant="10" id="OZN-XU-ELK"/>
-                                            <constraint firstItem="gX8-hV-K6B" firstAttribute="top" secondItem="0so-J9-WId" secondAttribute="bottom" constant="20" id="TSi-J9-xxf"/>
+                                            <constraint firstItem="gX8-hV-K6B" firstAttribute="top" secondItem="0so-J9-WId" secondAttribute="bottom" constant="10" id="TSi-J9-xxf"/>
                                             <constraint firstItem="0so-J9-WId" firstAttribute="top" secondItem="sot-2R-uBf" secondAttribute="bottom" constant="10" id="Tsh-nu-dcp"/>
                                             <constraint firstItem="HfB-dc-Yuj" firstAttribute="width" secondItem="UvW-WM-ag5" secondAttribute="width" multiplier="0.8" id="Uaa-10-HOH"/>
                                             <constraint firstItem="0so-J9-WId" firstAttribute="width" secondItem="sot-2R-uBf" secondAttribute="width" id="Vop-nl-WgW"/>
                                             <constraint firstItem="000-i7-5kF" firstAttribute="top" secondItem="A1U-8V-2jw" secondAttribute="bottom" constant="10" id="WD3-cr-Pac"/>
-                                            <constraint firstItem="0so-J9-WId" firstAttribute="height" secondItem="xZ2-E7-cnq" secondAttribute="height" id="Xmm-BZ-I1L"/>
                                             <constraint firstItem="gX8-hV-K6B" firstAttribute="height" secondItem="y0K-wa-qY1" secondAttribute="height" id="ZFl-j2-1Bx"/>
                                             <constraint firstItem="lOP-FI-i5E" firstAttribute="leading" secondItem="7qK-YY-aG4" secondAttribute="trailing" constant="10" id="aZl-e1-Gzx"/>
                                             <constraint firstItem="7qK-YY-aG4" firstAttribute="top" secondItem="vpw-bT-wrz" secondAttribute="bottom" constant="10" id="avr-ow-56T"/>
@@ -343,7 +348,6 @@
                                             <constraint firstAttribute="trailing" secondItem="0so-J9-WId" secondAttribute="trailing" id="pT6-kn-Qsa"/>
                                             <constraint firstAttribute="trailing" secondItem="lOP-FI-i5E" secondAttribute="trailing" constant="10" id="tqe-8h-8Zd"/>
                                             <constraint firstItem="xZ2-E7-cnq" firstAttribute="leading" secondItem="b1H-mk-qxn" secondAttribute="leading" constant="5" id="vDl-XD-oCW"/>
-                                            <constraint firstAttribute="bottom" secondItem="HfB-dc-Yuj" secondAttribute="bottom" id="vW4-fm-c6I"/>
                                             <constraint firstItem="lOP-FI-i5E" firstAttribute="top" secondItem="7qK-YY-aG4" secondAttribute="top" constant="20" id="wgX-aK-DCC"/>
                                             <constraint firstItem="0so-J9-WId" firstAttribute="centerX" secondItem="sot-2R-uBf" secondAttribute="centerX" id="xte-3a-CV1"/>
                                             <constraint firstItem="000-i7-5kF" firstAttribute="height" secondItem="sot-2R-uBf" secondAttribute="height" id="y0y-tH-Ugc"/>
@@ -351,7 +355,7 @@
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="UvW-WM-ag5" firstAttribute="height" secondItem="BCK-l2-V4k" secondAttribute="height" id="K47-1o-cT8"/>
+                                    <constraint firstItem="UvW-WM-ag5" firstAttribute="height" secondItem="BCK-l2-V4k" secondAttribute="height" multiplier="0.9" id="K47-1o-cT8"/>
                                     <constraint firstItem="UvW-WM-ag5" firstAttribute="top" secondItem="BCK-l2-V4k" secondAttribute="top" id="LW7-Qq-QpO"/>
                                     <constraint firstItem="UvW-WM-ag5" firstAttribute="leading" secondItem="BCK-l2-V4k" secondAttribute="leading" id="g3s-eR-a1E"/>
                                     <constraint firstItem="UvW-WM-ag5" firstAttribute="width" secondItem="BCK-l2-V4k" secondAttribute="width" id="hka-eH-xCC"/>
@@ -408,6 +412,8 @@
                     </view>
                     <connections>
                         <outlet property="addToPlayListButton" destination="gX8-hV-K6B" id="2jC-UJ-FrZ"/>
+                        <outlet property="backgroundView" destination="UvW-WM-ag5" id="yNY-ZI-66G"/>
+                        <outlet property="dJListTableViewHeightConstraint" destination="25k-Jh-zvy" id="jq3-Md-ZwE"/>
                         <outlet property="dJNameLabel" destination="A1U-8V-2jw" id="wW9-d0-I1s"/>
                         <outlet property="djListTableView" destination="HfB-dc-Yuj" id="RXk-14-czi"/>
                         <outlet property="emptyView" destination="igy-TW-sTp" id="4dT-k7-aAg"/>
@@ -417,6 +423,7 @@
                         <outlet property="songIconImageView" destination="7qK-YY-aG4" id="trP-Pd-DIQ"/>
                         <outlet property="songNameLabel" destination="lOP-FI-i5E" id="Qdz-Yo-ED8"/>
                         <outlet property="songsListTableView" destination="0so-J9-WId" id="D4B-Cl-Aoz"/>
+                        <outlet property="songsListTableViewHeightConstraint" destination="NQx-3t-hAO" id="JeK-AP-BMz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o72-Vg-WdR" userLabel="First Responder" sceneMemberID="firstResponder"/>

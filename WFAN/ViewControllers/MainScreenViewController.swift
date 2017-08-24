@@ -19,7 +19,12 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
     @IBOutlet weak var songsListTableView: UITableView!
     @IBOutlet weak var djListTableView: UITableView!
     @IBOutlet weak var dJNameLabel: UILabel!
+    @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var emptyView: UIView!
+    
+    // Height Constraint Of Table Views
+    @IBOutlet weak var dJListTableViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var songsListTableViewHeightConstraint: NSLayoutConstraint!
     
     var currentDJName: String!
     var djListArray:[String] = []
@@ -31,7 +36,19 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         djListArray.append("Slim Albert")
         dJNameLabel.text = "Joseph Mother"
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+         adjustHieghtOfAllViews()
+    }
+    func adjustHieghtOfAllViews()
+    {
+        songsListTableViewHeightConstraint.constant = CGFloat(75 * songListArray.count)
+        dJListTableViewHeightConstraint.constant = CGFloat(75 * djListArray.count)
+        backgroundView.layoutIfNeeded()
+        
+        backgroundView.translatesAutoresizingMaskIntoConstraints = true
+        
+        backgroundView.frame.size.height =  djListTableView.frame.origin.y + CGFloat(75 * djListArray.count)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -57,6 +74,8 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
             self.djListArray.remove(at: self.djListArray.index(of: self.currentDJName)!)
             self.djListTableView.reloadData()
         }
+        
+        adjustHieghtOfAllViews()
     }
     
     @IBAction func skipButtonTap(_ sender: UIButton) {
@@ -70,6 +89,16 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
             songListArray.removeFirst()
             songsListTableView.reloadData()
         }
+        else
+        {
+            djListArray.removeAll()
+            
+            playStopButton.isSelected = false
+            djListTableView.reloadData()
+            emptyView.isHidden = false
+        }
+        
+        adjustHieghtOfAllViews()
     }
     
     @IBAction func addToPlayListButtonTap(_ sender: UIButton) {
@@ -102,6 +131,8 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
                 
                 self.songListArray.append(dic as! [String : String])
                 self.songsListTableView.reloadData()
+                
+                self.adjustHieghtOfAllViews()
             }
             
             //compare the current password and do action here
@@ -150,13 +181,7 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if tableView.tag == 101 {
-            return songsListTableView.frame.size.height
-        }
-        else
-        {
-            return 80.0
-        }
+        return 75.0
     }
     /*
      // MARK: - Navigation
