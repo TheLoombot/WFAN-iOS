@@ -8,6 +8,8 @@
 
 import UIKit
 
+import Firebase
+
 class MainScreenViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     @IBOutlet weak var songIconImageView: UIImageView!
@@ -27,21 +29,115 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
     @IBOutlet weak var songsListTableViewHeightConstraint: NSLayoutConstraint!
     
     var currentDJName: String!
-    var djListArray:[String] = []
+    var djListArray:[Dictionary<String, String>] = []
     var songListArray: [Dictionary<String, String>] = []
+    
+    let firbasePlayListReference = FIRDatabase.database().reference().child("Playlist")
+    
+    let firebaseDJsListReference = FIRDatabase.database().reference().child("DJList")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        djListArray.append("Slim Albert")
-        dJNameLabel.text = "Joseph Mother"
+        dJNameLabel.text = ""
+        self.emptyView.isHidden = false
+        self.observerFbDatabaseChanges()
     }
     override func viewDidAppear(_ animated: Bool) {
          adjustHieghtOfAllViews()
     }
+    
+    func observerFbDatabaseChanges()
+    {
+       
+        firbasePlayListReference.observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+            
+            let songDic = snapshot.value as! [String: String]
+            // Append Song Added to Playlist
+            self.songListArray.append(songDic )
+            self.songsListTableView.reloadData()
+            
+            
+            let songToPlay = self.songListArray.first!
+            self.songNameLabel.text = songToPlay["SongName"]!
+            self.songDetailLabel.text = songToPlay["ArtistName"]!
+            self.songIconImageView.image = UIImage(named: (songToPlay["icon"])!)
+            
+            self.emptyView.isHidden = true
+            
+            self.adjustHieghtOfAllViews()
+        }
+        
+        firbasePlayListReference.observe(.childRemoved) { (snapshot: FIRDataSnapshot) in
+            
+            let songDic = snapshot.value as! [String: String]
+            
+            self.songListArray.remove(at: self.songListArray.index(where: { $0 == songDic})!)
+            
+            self.songsListTableView.reloadData()
+            
+            if self.songListArray.count > 0
+            {
+                let songToPlay = self.songListArray.first!
+                self.songNameLabel.text = songToPlay["SongName"]!
+                self.songDetailLabel.text = songToPlay["ArtistName"]!
+                self.songIconImageView.image = UIImage(named: (songToPlay["icon"])!)
+                self.emptyView.isHidden = true
+            }
+            else
+            {
+                self.emptyView.isHidden = false
+                self.playStopButton.isSelected = false
+                
+                self.firebaseDJsListReference.removeValue()
+            }
+            
+            self.adjustHieghtOfAllViews()
+        }
+        
+        
+        firebaseDJsListReference.observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+            
+            let dJDic = snapshot.value as! [String: String]
+            
+            self.djListArray.append(dJDic)
+            
+            self.djListTableView.reloadData()
+            
+            let leadDJ = self.djListArray.first
+            
+            self.dJNameLabel.text = leadDJ?["DJName"]
+            
+             self.adjustHieghtOfAllViews()
+        }
+        
+        firebaseDJsListReference.observe(.childRemoved) { (snapshot: FIRDataSnapshot) in
+            
+            let dJDic = snapshot.value as! [String: String]
+            
+            self.djListArray.remove(at: self.djListArray.index(where: {$0 == dJDic})!)
+            
+            self.djListTableView.reloadData()
+            
+            if self.djListArray.count > 0
+            {
+                let leadDJ = self.djListArray.first
+                
+                self.dJNameLabel.text = leadDJ?["DJName"]
+            }
+            else
+            {
+                self.dJNameLabel.text = ""
+            }
+            
+             self.adjustHieghtOfAllViews()
+        }
+        
+    }
+    
     func adjustHieghtOfAllViews()
     {
-        songsListTableViewHeightConstraint.constant = CGFloat(75 * songListArray.count)
+        songsListTableViewHeightConstraint.constant = CGFloat(75 * (songListArray.count - 1))
         dJListTableViewHeightConstraint.constant = CGFloat(75 * djListArray.count)
         backgroundView.layoutIfNeeded()
         
@@ -64,18 +160,16 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
             sender.isSelected = true
         }
         
-        if !self.djListArray.contains(self.currentDJName)
+        let dic: [String: String] = ["DJName":self.currentDJName]
+        if (self.djListArray.contains {$0 == dic})
         {
-            self.djListArray.append(self.currentDJName)
-            self.djListTableView.reloadData()
+            firebaseDJsListReference.child(self.currentDJName).removeValue()
         }
         else
         {
-            self.djListArray.remove(at: self.djListArray.index(of: self.currentDJName)!)
-            self.djListTableView.reloadData()
+             firebaseDJsListReference.child(self.currentDJName).setValue(dic)
         }
         
-        adjustHieghtOfAllViews()
     }
     
     @IBAction func skipButtonTap(_ sender: UIButton) {
@@ -83,22 +177,10 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         if songListArray.count > 0
         {
             let dic = songListArray.first
-            songNameLabel.text = dic?["SongName"]
-            songDetailLabel.text = dic?["ArtistName"]
-            songIconImageView.image = UIImage(named: (dic?["icon"])!)
-            songListArray.removeFirst()
-            songsListTableView.reloadData()
-        }
-        else
-        {
-            djListArray.removeAll()
             
-            playStopButton.isSelected = false
-            djListTableView.reloadData()
-            emptyView.isHidden = false
+            firbasePlayListReference.child((dic?["SongName"])!).removeValue()
+            
         }
-        
-        adjustHieghtOfAllViews()
     }
     
     @IBAction func addToPlayListButtonTap(_ sender: UIButton) {
@@ -120,22 +202,10 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
             {
                 let dic = ["SongName":songName, "ArtistName":artistName, "icon":"song2"]
                 
-                if !self.emptyView.isHidden
-                {
-                    self.songNameLabel.text = dic["SongName"]!
-                    self.songDetailLabel.text = dic["ArtistName"]!
-                    self.songIconImageView.image = UIImage(named: (dic["icon"])!!)
-                    self.emptyView.isHidden = true
-                    return
-                }
+                self.firbasePlayListReference.child(songName!).setValue(dic)
                 
-                self.songListArray.append(dic as! [String : String])
-                self.songsListTableView.reloadData()
-                
-                self.adjustHieghtOfAllViews()
             }
             
-            //compare the current password and do action here
         })
         alertController.addAction(confirmAction)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {(_ action: UIAlertAction) -> Void in
@@ -150,11 +220,11 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         
         if tableView.tag == 101
         {
-            return songListArray.count
+            return songListArray.count - 1
         }
         else
         {
-            return djListArray.count
+            return djListArray.count - 1
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -163,7 +233,7 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         {
             let songsListTableViewCell  = tableView.dequeueReusableCell(withIdentifier: "songTableCell", for: indexPath) as! SongsListTableViewCell
             
-            let dic  = songListArray[indexPath.row]
+            let dic  = songListArray[indexPath.row + 1]
             
             songsListTableViewCell.songNameLabel.text = dic["SongName"]
             songsListTableViewCell.songDetailsLabel.text = dic["ArtistName"]
@@ -174,7 +244,11 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         else
         {
             let dJListTableViewCell  = tableView.dequeueReusableCell(withIdentifier: "dJTableCell", for: indexPath) as! DJListTableViewCell
-            dJListTableViewCell.djNameLabel.text = djListArray[indexPath.row]
+            
+            let dic  = djListArray[indexPath.row + 1]
+            
+            dJListTableViewCell.djNameLabel.text = dic["DJName"]
+            
             return dJListTableViewCell
         }
         

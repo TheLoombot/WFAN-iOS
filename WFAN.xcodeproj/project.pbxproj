@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		41EC33506A913CF5A746D2D5 /* Pods_WFAN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B8D460484F4A2008FB2D9F7 /* Pods_WFAN.framework */; };
 		C730E2861F4C6D2700A3C627 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C730E2851F4C6D2700A3C627 /* AppDelegate.swift */; };
 		C730E28B1F4C6D2700A3C627 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C730E2891F4C6D2700A3C627 /* Main.storyboard */; };
 		C730E28D1F4C6D2700A3C627 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C730E28C1F4C6D2700A3C627 /* Assets.xcassets */; };
 		C730E2901F4C6D2700A3C627 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C730E28E1F4C6D2700A3C627 /* LaunchScreen.storyboard */; };
+		C74A1FE41F505ADD00A0B533 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C74A1FE31F505ADD00A0B533 /* GoogleService-Info.plist */; };
 		C7E755BF1F4DB1C000816224 /* SongsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E755BE1F4DB1C000816224 /* SongsListTableViewCell.swift */; };
 		C7E755C11F4DB1E400816224 /* DJListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E755C01F4DB1E400816224 /* DJListTableViewCell.swift */; };
 		C7F638F81F4C71A0002C6706 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F638F71F4C71A0002C6706 /* LoginViewController.swift */; };
@@ -19,12 +21,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B8D460484F4A2008FB2D9F7 /* Pods_WFAN.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WFAN.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43FD620C00E15DB8017CC1C1 /* Pods-WFAN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WFAN.release.xcconfig"; path = "Pods/Target Support Files/Pods-WFAN/Pods-WFAN.release.xcconfig"; sourceTree = "<group>"; };
+		71BD74469E69E57D53229A7A /* Pods-WFAN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WFAN.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WFAN/Pods-WFAN.debug.xcconfig"; sourceTree = "<group>"; };
 		C730E2821F4C6D2700A3C627 /* WFAN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WFAN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C730E2851F4C6D2700A3C627 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C730E28A1F4C6D2700A3C627 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C730E28C1F4C6D2700A3C627 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C730E28F1F4C6D2700A3C627 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C730E2911F4C6D2700A3C627 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C74A1FE31F505ADD00A0B533 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C7E755BE1F4DB1C000816224 /* SongsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsListTableViewCell.swift; sourceTree = "<group>"; };
 		C7E755C01F4DB1E400816224 /* DJListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DJListTableViewCell.swift; sourceTree = "<group>"; };
 		C7F638F71F4C71A0002C6706 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -37,17 +43,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41EC33506A913CF5A746D2D5 /* Pods_WFAN.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A842FCF3232A0C9F6D4D5E8B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				71BD74469E69E57D53229A7A /* Pods-WFAN.debug.xcconfig */,
+				43FD620C00E15DB8017CC1C1 /* Pods-WFAN.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		C730E2791F4C6D2700A3C627 = {
 			isa = PBXGroup;
 			children = (
 				C730E2841F4C6D2700A3C627 /* WFAN */,
 				C730E2831F4C6D2700A3C627 /* Products */,
+				A842FCF3232A0C9F6D4D5E8B /* Pods */,
+				F443073412B322ECA74D2A2D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,6 +80,7 @@
 		C730E2841F4C6D2700A3C627 /* WFAN */ = {
 			isa = PBXGroup;
 			children = (
+				C74A1FE31F505ADD00A0B533 /* GoogleService-Info.plist */,
 				C730E2851F4C6D2700A3C627 /* AppDelegate.swift */,
 				C7F638FE1F4C920F002C6706 /* ViewControllers */,
 				C7F638FD1F4C91FD002C6706 /* Utilities */,
@@ -100,6 +119,14 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
+		F443073412B322ECA74D2A2D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0B8D460484F4A2008FB2D9F7 /* Pods_WFAN.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -107,9 +134,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C730E2941F4C6D2700A3C627 /* Build configuration list for PBXNativeTarget "WFAN" */;
 			buildPhases = (
+				226AC75515E888B79D0545B4 /* [CP] Check Pods Manifest.lock */,
 				C730E27E1F4C6D2700A3C627 /* Sources */,
 				C730E27F1F4C6D2700A3C627 /* Frameworks */,
 				C730E2801F4C6D2700A3C627 /* Resources */,
+				A65FC7A683FDE83378E67649 /* [CP] Embed Pods Frameworks */,
+				1C8776ED9F9188F229158B49 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -160,12 +190,61 @@
 			buildActionMask = 2147483647;
 			files = (
 				C730E2901F4C6D2700A3C627 /* LaunchScreen.storyboard in Resources */,
+				C74A1FE41F505ADD00A0B533 /* GoogleService-Info.plist in Resources */,
 				C730E28D1F4C6D2700A3C627 /* Assets.xcassets in Resources */,
 				C730E28B1F4C6D2700A3C627 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1C8776ED9F9188F229158B49 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WFAN/Pods-WFAN-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		226AC75515E888B79D0545B4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A65FC7A683FDE83378E67649 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WFAN/Pods-WFAN-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C730E27E1F4C6D2700A3C627 /* Sources */ = {
@@ -312,14 +391,15 @@
 		};
 		C730E2951F4C6D2700A3C627 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 71BD74469E69E57D53229A7A /* Pods-WFAN.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AG7U5AM73M;
 				INFOPLIST_FILE = WFAN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lensie.wfan;
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iosTesting.team.WFAN;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -330,14 +410,15 @@
 		};
 		C730E2961F4C6D2700A3C627 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43FD620C00E15DB8017CC1C1 /* Pods-WFAN.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AG7U5AM73M;
 				INFOPLIST_FILE = WFAN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lensie.wfan;
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iosTesting.team.WFAN;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
