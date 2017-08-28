@@ -7,13 +7,13 @@ target 'WFAN' do
 
   # Pods for WFAN
 pod 'Firebase/Core'
-pod 'Firebase/AdMob'
-pod 'Firebase/Messaging'
+#pod 'Firebase/AdMob'
+#pod 'Firebase/Messaging'
 pod 'Firebase/Database'
-pod 'Firebase/DynamicLinks'
-pod 'Firebase/Crash'
-pod 'Firebase/RemoteConfig'
+#pod 'Firebase/DynamicLinks'
+#pod 'Firebase/Crash'
+#pod 'Firebase/RemoteConfig'
 pod 'Firebase/Auth'
-pod 'Firebase/Storage'
+#pod 'Firebase/Storage'
 
 end
