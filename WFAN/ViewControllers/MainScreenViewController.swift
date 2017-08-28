@@ -32,9 +32,9 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
     var djListArray:[Dictionary<String, String>] = []
     var songListArray: [Dictionary<String, String>] = []
     
-    let firbasePlayListReference = FIRDatabase.database().reference().child("Playlist")
+    let firbasePlayListReference = Database.database().reference().child("Playlist")
     
-    let firebaseDJsListReference = FIRDatabase.database().reference().child("DJList")
+    let firebaseDJsListReference = Database.database().reference().child("DJList")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +50,7 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
     func observerFbDatabaseChanges()
     {
        
-        firbasePlayListReference.observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+        firbasePlayListReference.observe(.childAdded) { (snapshot: DataSnapshot) in
             
             let songDic = snapshot.value as! [String: String]
             // Append Song Added to Playlist
@@ -68,7 +68,7 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
             self.adjustHieghtOfAllViews()
         }
         
-        firbasePlayListReference.observe(.childRemoved) { (snapshot: FIRDataSnapshot) in
+        firbasePlayListReference.observe(.childRemoved) { (snapshot: DataSnapshot) in
             
             let songDic = snapshot.value as! [String: String]
             
@@ -96,7 +96,7 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         }
         
         
-        firebaseDJsListReference.observe(.childAdded) { (snapshot: FIRDataSnapshot) in
+        firebaseDJsListReference.observe(.childAdded) { (snapshot: DataSnapshot) in
             
             let dJDic = snapshot.value as! [String: String]
             
@@ -111,7 +111,7 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
              self.adjustHieghtOfAllViews()
         }
         
-        firebaseDJsListReference.observe(.childRemoved) { (snapshot: FIRDataSnapshot) in
+        firebaseDJsListReference.observe(.childRemoved) { (snapshot: DataSnapshot) in
             
             let dJDic = snapshot.value as! [String: String]
             

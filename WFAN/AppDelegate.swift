@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
          UIApplication.shared.isStatusBarHidden = true
         
-        FIRApp.configure()
+        FirebaseApp.configure()
         
         return true
     }
