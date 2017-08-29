@@ -49,14 +49,12 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
     
     func observerFbDatabaseChanges()
     {
-       
-        firbasePlayListReference.observe(.childAdded) { (snapshot: DataSnapshot) in
+        firbasePlayListReference.queryOrderedByKey().observe(.childAdded) { (snapshot: DataSnapshot) in
             
             let songDic = snapshot.value as! [String: String]
             // Append Song Added to Playlist
             self.songListArray.append(songDic )
             self.songsListTableView.reloadData()
-            
             
             let songToPlay = self.songListArray.first!
             self.songNameLabel.text = songToPlay["SongName"]!
@@ -98,6 +96,9 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         
         firebaseDJsListReference.observe(.childAdded) { (snapshot: DataSnapshot) in
             
+             self.skipButton.isEnabled = false
+            self.playStopButton.isSelected = false
+            
             let dJDic = snapshot.value as! [String: String]
             
             self.djListArray.append(dJDic)
@@ -108,10 +109,19 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
             
             self.dJNameLabel.text = leadDJ?["DJName"]
             
+            if self.currentDJName == leadDJ?["DJName"]
+            {
+                self.skipButton.isEnabled = true
+                 self.playStopButton.isSelected = true
+            }
+            
              self.adjustHieghtOfAllViews()
         }
         
         firebaseDJsListReference.observe(.childRemoved) { (snapshot: DataSnapshot) in
+            
+            self.skipButton.isEnabled = false
+            self.playStopButton.isSelected = false
             
             let dJDic = snapshot.value as! [String: String]
             
@@ -124,6 +134,13 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
                 let leadDJ = self.djListArray.first
                 
                 self.dJNameLabel.text = leadDJ?["DJName"]
+                
+                if self.currentDJName == leadDJ?["DJName"]
+                {
+                    self.skipButton.isEnabled = true
+                    self.playStopButton.isSelected = true
+                }
+                
             }
             else
             {
@@ -151,15 +168,6 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
     }
     // MARK:- Button Actions
     @IBAction func playStopButtonTap(_ sender: UIButton) {
-        if sender.isSelected
-        {
-            sender.isSelected = false
-        }
-        else
-        {
-            sender.isSelected = true
-        }
-        
         let dic: [String: String] = ["DJName":self.currentDJName]
         if (self.djListArray.contains {$0 == dic})
         {
@@ -177,9 +185,7 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         if songListArray.count > 0
         {
             let dic = songListArray.first
-            
-            firbasePlayListReference.child((dic?["SongName"])!).removeValue()
-            
+            firbasePlayListReference.child((dic?["songId"])!).removeValue()
         }
     }
     
@@ -200,9 +206,10 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
             
             if songName != "" && artistName != ""
             {
-                let dic = ["SongName":songName, "ArtistName":artistName, "icon":"song2"]
+                let key = self.firebaseDJsListReference.childByAutoId().key
+                let dic = ["SongName":songName, "ArtistName":artistName, "icon":"song2", "songId":key]
                 
-                self.firbasePlayListReference.child(songName!).setValue(dic)
+                self.firbasePlayListReference.child(key).setValue(dic)
                 
             }
             
