@@ -69,21 +69,16 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         firbasePlayListReference.observe(.childRemoved) { (snapshot: DataSnapshot) in
             
             let songDic = snapshot.value as! [String: String]
-            
             self.songListArray.remove(at: self.songListArray.index(where: { $0 == songDic})!)
-            
             self.songsListTableView.reloadData()
             
-            if self.songListArray.count > 0
-            {
+            if self.songListArray.count > 0 {
                 let songToPlay = self.songListArray.first!
                 self.songNameLabel.text = songToPlay["SongName"]!
                 self.songDetailLabel.text = songToPlay["ArtistName"]!
                 self.songIconImageView.image = UIImage(named: (songToPlay["icon"])!)
                 self.emptyView.isHidden = true
-            }
-            else
-            {
+            } else {
                 self.emptyView.isHidden = false
                 self.playStopButton.isSelected = false
                 
@@ -93,26 +88,27 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
             self.adjustHieghtOfAllViews()
         }
         
-        
-        firebaseDJsListReference.observe(.childAdded) { (snapshot: DataSnapshot) in
+        firebaseDJsListReference.queryOrderedByKey().observe(.childAdded) { (snapshot: DataSnapshot) in
             
-             self.skipButton.isEnabled = false
+            self.skipButton.isEnabled = false
             self.playStopButton.isSelected = false
             
             let dJDic = snapshot.value as! [String: String]
-            
             self.djListArray.append(dJDic)
-            
             self.djListTableView.reloadData()
             
+            for dj in self.djListArray {
+                if dj["DJName"] == self.currentDJName {
+                    self.playStopButton.isSelected = true
+                    break
+                }
+            }
+            
             let leadDJ = self.djListArray.first
-            
             self.dJNameLabel.text = leadDJ?["DJName"]
-            
             if self.currentDJName == leadDJ?["DJName"]
             {
                 self.skipButton.isEnabled = true
-                 self.playStopButton.isSelected = true
             }
             
              self.adjustHieghtOfAllViews()
@@ -124,21 +120,21 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
             self.playStopButton.isSelected = false
             
             let dJDic = snapshot.value as! [String: String]
-            
             self.djListArray.remove(at: self.djListArray.index(where: {$0 == dJDic})!)
-            
             self.djListTableView.reloadData()
             
-            if self.djListArray.count > 0
-            {
-                let leadDJ = self.djListArray.first
-                
-                self.dJNameLabel.text = leadDJ?["DJName"]
-                
-                if self.currentDJName == leadDJ?["DJName"]
-                {
-                    self.skipButton.isEnabled = true
+            for dj in self.djListArray {
+                if dj["DJName"] == self.currentDJName {
                     self.playStopButton.isSelected = true
+                    break
+                }
+            }
+            
+            if self.djListArray.count > 0{
+                let leadDJ = self.djListArray.first
+                self.dJNameLabel.text = leadDJ?["DJName"]
+                if self.currentDJName == leadDJ?["DJName"]{
+                    self.skipButton.isEnabled = true
                 }
                 
             }
@@ -168,14 +164,26 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
     }
     // MARK:- Button Actions
     @IBAction func playStopButtonTap(_ sender: UIButton) {
-        let dic: [String: String] = ["DJName":self.currentDJName]
+        var dic: [String: String] = ["DJName":self.currentDJName]
+        
+        for dj in self.djListArray {
+            if dj["DJName"] == self.currentDJName {
+               dic = dj
+                break
+            }
+        }
+        
         if (self.djListArray.contains {$0 == dic})
         {
-            firebaseDJsListReference.child(self.currentDJName).removeValue()
+            firebaseDJsListReference.child(dic["dJId"]!).removeValue()
+            self.playStopButton.isSelected = false
         }
         else
         {
-             firebaseDJsListReference.child(self.currentDJName).setValue(dic)
+            let key = firbasePlayListReference.childByAutoId().key
+            dic["dJId"] = key
+             firebaseDJsListReference.child(key).setValue(dic)
+            self.playStopButton.isSelected = true
         }
         
     }
