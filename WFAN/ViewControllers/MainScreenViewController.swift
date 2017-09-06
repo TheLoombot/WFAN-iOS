@@ -30,7 +30,19 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
     
     var currentDJName: String!
     var djListArray:[Dictionary<String, String>] = []
-    var songListArray: [Dictionary<String, String>] = []
+//    var songListArray: [Dictionary<String, AnyObject>] = []
+    /// The array of `MediaItem` objects that represents the list of search results.
+    var mediaItems = [MediaItem]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.songsListTableView.reloadData()
+            }
+        }
+    }
+    /// The instance of `ImageCacheManager` that is used for downloading and caching album artwork images.
+    let imageCacheManager = ImageCacheManager()
+    
+    var authorizationManager: AuthorizationManager!
     
     let firbasePlayListReference = Database.database().reference().child("Playlist")
     
@@ -51,32 +63,41 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
     {
         firbasePlayListReference.queryOrderedByKey().observe(.childAdded) { (snapshot: DataSnapshot) in
             
-            let songDic = snapshot.value as! [String: String]
-            // Append Song Added to Playlist
-            self.songListArray.append(songDic )
+            let songObject = snapshot.value as! [String: Any]
+            let mediaItem = MediaItem(data: songObject)
+            self.mediaItems.append(mediaItem)
+            
             self.songsListTableView.reloadData()
             
-            let songToPlay = self.songListArray.first!
-            self.songNameLabel.text = songToPlay["SongName"]!
-            self.songDetailLabel.text = songToPlay["ArtistName"]!
-            self.songIconImageView.image = UIImage(named: (songToPlay["icon"])!)
+            let songToPlay = self.mediaItems.first!
+            self.songNameLabel.text = songToPlay.name
+            self.songDetailLabel.text = songToPlay.artistName
+            
+            // Image loading.
+            let imageURL = songToPlay.artwork.imageURL(size: CGSize(width: 300, height: 300))
+            
+             self.setSongIcon(imageView: self.songIconImageView, imageURL: imageURL)
             
             self.emptyView.isHidden = true
             
             self.adjustHieghtOfAllViews()
-        }
+            }
         
         firbasePlayListReference.observe(.childRemoved) { (snapshot: DataSnapshot) in
             
-            let songDic = snapshot.value as! [String: String]
-            self.songListArray.remove(at: self.songListArray.index(where: { $0 == songDic})!)
+            let songDic = snapshot.value as! [String: Any]
+            self.mediaItems.remove(at: self.mediaItems.index(where: { $0.firebaseKey as String == songDic["firebaseKey"] as! String})!)
             self.songsListTableView.reloadData()
             
-            if self.songListArray.count > 0 {
-                let songToPlay = self.songListArray.first!
-                self.songNameLabel.text = songToPlay["SongName"]!
-                self.songDetailLabel.text = songToPlay["ArtistName"]!
-                self.songIconImageView.image = UIImage(named: (songToPlay["icon"])!)
+            if self.mediaItems.count > 0 {
+                let songToPlay = self.mediaItems.first!
+                self.songNameLabel.text = songToPlay.name
+                self.songDetailLabel.text = songToPlay.artistName
+                // Image loading.
+                let imageURL = songToPlay.artwork.imageURL(size: CGSize(width: 300, height: 300))
+                
+                self.setSongIcon(imageView: self.songIconImageView, imageURL: imageURL)
+                
                 self.emptyView.isHidden = true
             } else {
                 self.emptyView.isHidden = false
@@ -147,10 +168,29 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         }
         
     }
-    
+    func setSongIcon(imageView:UIImageView, imageURL:URL)
+    {
+        if let image = self.imageCacheManager.cachedImage(url: imageURL) {
+            // Cached: set immediately.
+            imageView.image = image
+            imageView.alpha = 1
+            
+        } else {
+            
+            // Not cached, so load then fade it in.
+            imageView.alpha = 0
+            self.imageCacheManager.fetchImage(url: imageURL, completion: { (image) in
+                // Check the cell hasn't recycled while loading.
+                imageView.image = image
+                UIView.animate(withDuration: 0.3) {
+                    imageView.alpha = 1
+                }
+            })
+        }
+    }
     func adjustHieghtOfAllViews()
     {
-        songsListTableViewHeightConstraint.constant = CGFloat(75 * (songListArray.count - 1))
+        songsListTableViewHeightConstraint.constant = CGFloat(75 * (mediaItems.count - 1))
         dJListTableViewHeightConstraint.constant = CGFloat(75 * djListArray.count)
         backgroundView.layoutIfNeeded()
         
@@ -190,44 +230,22 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
     
     @IBAction func skipButtonTap(_ sender: UIButton) {
         
-        if songListArray.count > 0
+        if mediaItems.count > 0
         {
-            let dic = songListArray.first
-            firbasePlayListReference.child((dic?["songId"])!).removeValue()
+            let item = mediaItems.first
+            firbasePlayListReference.child((item?.firebaseKey)!).removeValue()
         }
     }
     
     @IBAction func addToPlayListButtonTap(_ sender: UIButton) {
-        let alertController = UIAlertController(title: "Alert", message: "Enter Song", preferredStyle: .alert)
-        alertController.addTextField(configurationHandler: {(_ textField: UITextField) -> Void in
-            textField.placeholder = "Enter song name"
-        })
         
-        alertController.addTextField(configurationHandler: {(_ textField: UITextField) -> Void in
-            textField.placeholder = "Enter song artist name"
-        })
         
-        let confirmAction = UIAlertAction(title: "Done", style: .default, handler: {(_ action: UIAlertAction) -> Void in
-            
-            let songName = alertController.textFields?[0].text
-            let artistName = alertController.textFields?[1].text
-            
-            if songName != "" && artistName != ""
-            {
-                let key = self.firebaseDJsListReference.childByAutoId().key
-                let dic = ["SongName":songName, "ArtistName":artistName, "icon":"song2", "songId":key]
-                
-                self.firbasePlayListReference.child(key).setValue(dic)
-                
-            }
-            
-        })
-        alertController.addAction(confirmAction)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {(_ action: UIAlertAction) -> Void in
-            print("Canelled")
-        })
-        alertController.addAction(cancelAction)
-        present(alertController, animated: true, completion: {})
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let songsSearchViewController  = storyboard.instantiateViewController(withIdentifier: "SongsSearchViewController") as! SongsSearchViewController
+        
+        songsSearchViewController.authorizationManager = self.authorizationManager
+        self.present(songsSearchViewController, animated: true, completion: nil)
     }
     
     // MARK:- Table View Delegate and DataSource
@@ -235,7 +253,7 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         
         if tableView.tag == 101
         {
-            return songListArray.count - 1
+            return mediaItems.count - 1
         }
         else
         {
@@ -246,13 +264,18 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         
         if tableView.tag == 101
         {
-            let songsListTableViewCell  = tableView.dequeueReusableCell(withIdentifier: "songTableCell", for: indexPath) as! SongsListTableViewCell
+            guard let songsListTableViewCell = tableView.dequeueReusableCell(withIdentifier: SongsListTableViewCell.identifier,
+                                                           for: indexPath) as? SongsListTableViewCell else {
+                                                            return UITableViewCell()
+            }
             
-            let dic  = songListArray[indexPath.row + 1]
+            let mediaItem = mediaItems[indexPath.row + 1]
+            songsListTableViewCell.mediaItem = mediaItem
             
-            songsListTableViewCell.songNameLabel.text = dic["SongName"]
-            songsListTableViewCell.songDetailsLabel.text = dic["ArtistName"]
-            songsListTableViewCell.songIconImageView.image = UIImage(named: dic["icon"]!)
+            // Image loading.
+            let imageURL = mediaItem.artwork.imageURL(size: CGSize(width: 90, height: 90))
+            
+            self.setSongIcon(imageView: songsListTableViewCell.songIconImageView, imageURL: imageURL)
             
             return songsListTableViewCell
         }
@@ -272,6 +295,7 @@ class MainScreenViewController: UIViewController,UITableViewDelegate,UITableView
         
         return 75.0
     }
+    
     /*
      // MARK: - Navigation
      

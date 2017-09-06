@@ -8,8 +8,9 @@
 
 import UIKit
 
-protocol CustomTextFieldDelegate {
-    func keyboardGoButtonTap()
+@objc protocol CustomTextFieldDelegate {
+    @objc optional func keyboardDoneButtonTap()
+    @objc optional func textFieldClearButtonTap()
 }
 
 class CustomUITextField: UITextField,UITextFieldDelegate {
@@ -24,12 +25,19 @@ class CustomUITextField: UITextField,UITextFieldDelegate {
         super.init(frame: frame)
         addClearIcon()
     }
-    
+    func addSearchIcon()
+    {
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "search")
+        self.leftView = imageView
+        self.leftViewMode = .always
+    }
     func addClearIcon()
     {
         clearButton  = UIButton(type: .custom)
         clearButton.setImage(UIImage(named: "cross"), for: .normal)
-        clearButton.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
+        clearButton.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
         clearButton.addTarget(self, action: #selector(clear(sender:)), for: .touchUpInside)
         self.rightView = clearButton
         self.rightViewMode = .whileEditing
@@ -46,6 +54,7 @@ class CustomUITextField: UITextField,UITextFieldDelegate {
     @objc func clear(sender : UIButton) {
         self.text = ""
         sender.isHidden = true
+        customDelegate?.textFieldClearButtonTap?()
     }
     
     
@@ -80,7 +89,7 @@ class CustomUITextField: UITextField,UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        customDelegate?.keyboardGoButtonTap()
+        customDelegate?.keyboardDoneButtonTap?()
         
         return true
     }
