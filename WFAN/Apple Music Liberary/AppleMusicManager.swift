@@ -63,7 +63,7 @@ class AppleMusicManager {
                 completion(mediaItems, nil)
                 
             } catch {
-                fatalError("An error occurred: \(error.localizedDescription)")
+                completion([], nil)
             }
         }
         
